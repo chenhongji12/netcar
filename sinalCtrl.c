@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <sigal.h>
+#include <signal.h>
 #include <unistd.h>
 
-void Stop(void)
+void *Stop(void)
 {
 	printf("access ctrl+c!");
 	_exit(1);
