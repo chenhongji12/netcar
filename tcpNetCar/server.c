@@ -5,12 +5,19 @@
 
 #define BUFLEN 1024
 char buf[BUFLEN];
+struct termios stored_settings;
+
+void *exitSafe(void *arg)
+{
+	tcsetattr(STDIN_FILENO, TCSANOW, &stored_settings);
+	_exit(1);
+}
+
 void *handleClient(void *arg)
 {
 	int cfd = *((int*)arg);
 	printf("pthread accessed!\n");
 	
-        struct termios stored_settings;
         struct termios new_settings;
         tcgetattr(0, &stored_settings);
         new_settings = stored_settings;
@@ -36,18 +43,6 @@ void *handleClient(void *arg)
 			close(cfd);
 			return 0;
 		}
-//	write(cfd, "Heello!", 7);
-//		memset(buf, 0, 1024);
-//		size = read(cfd, buf, 1024);
-//		if(size >0)
-//			puts(buf);
-//		if(size == 0)
-//		{
-//			close(cfd);
-//			printf("close unnormally\n");
-//			tcsetattr(0, TCSANOW, &stored_settings);
-//			return 0;
-//		}
 	}
 //	close(cfd);
 }
@@ -59,6 +54,7 @@ int main()
 	int sfd = tcp_init("", 8890);
 	int ret;
 
+	signal(SIGINT, exitSafe);
 	printf("listen!\n");
 	while(1)
 	{
