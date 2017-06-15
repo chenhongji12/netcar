@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
@@ -15,3 +16,22 @@ int main()
 	while(1);
 	return 0;
 }
+=======
+#include <signal.h>
+#include <unistd.h>
+#include<stdio.h>  
+void ctrlhandler( int a )  
+{  
+ printf("you have press ctrl+c /n");  
+ /* close 相关操作*/  
+ getchar();  
+ exit(0);  
+}  
+int main()  
+{  
+ signal(SIGINT,ctrlhandler);  
+ /*其他操作*/  
+ getchar();  
+ return 1;  
+}  
+>>>>>>> 0fc8de8e9b298e941230269c9318c7960eb965b3
